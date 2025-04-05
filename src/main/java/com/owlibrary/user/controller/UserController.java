@@ -1,9 +1,6 @@
 package com.owlibrary.user.controller;
 
-import com.owlibrary.user.dto.FindUsernameRequest;
-import com.owlibrary.user.dto.FindUsernameResponse;
-import com.owlibrary.user.dto.SignupRequest;
-import com.owlibrary.user.dto.SignupResponse;
+import com.owlibrary.user.dto.*;
 import com.owlibrary.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +26,22 @@ public class UserController {
     @PostMapping("/find-username")
     public ResponseEntity<FindUsernameResponse> findUsername(@RequestBody @Valid FindUsernameRequest request) {
         return ResponseEntity.ok(userService.findUsername(request));
+    }
+
+    @PostMapping("/reset-password/request")
+    public ResponseEntity<Void> requestResetCode(@RequestBody @Valid PasswordResetRequest request) {
+        userService.sendResetPasswordCode(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password/verify")
+    public ResponseEntity<Void> verifyResetCode(@RequestBody @Valid PasswordResetCodeVerifyRequest request) {
+        userService.verifyResetPasswordCode(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password/confirm")
+    public ResponseEntity<PasswordResetResponse> resetPassword(@RequestBody @Valid PasswordResetConfirmRequest request) {
+        return ResponseEntity.ok(userService.resetPassword(request));
     }
 }
