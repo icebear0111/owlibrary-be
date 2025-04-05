@@ -53,4 +53,8 @@ public class User {
     public void updatePassword(String encodedPassword) {
         this.password = encodedPassword;
     }
+
+    public void updateProfileImageUrl(String url) {
+        this.profileImageUrl = url;
+    }
 }

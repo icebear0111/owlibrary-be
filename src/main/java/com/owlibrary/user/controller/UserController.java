@@ -2,13 +2,12 @@ package com.owlibrary.user.controller;
 
 import com.owlibrary.user.dto.*;
 import com.owlibrary.user.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -43,5 +42,13 @@ public class UserController {
     @PostMapping("/reset-password/confirm")
     public ResponseEntity<PasswordResetResponse> resetPassword(@RequestBody @Valid PasswordResetConfirmRequest request) {
         return ResponseEntity.ok(userService.resetPassword(request));
+    }
+
+    @PatchMapping("/me/profile")
+    @SecurityRequirement(name = "JWT")
+    public ResponseEntity<Void> updateProfile(@RequestBody @Valid UpdateProfileRequest request, Authentication authentication) {
+        String username = authentication.getName();
+        userService.updateProfileImage(username, request);
+        return ResponseEntity.ok().build();
     }
 }

@@ -123,4 +123,12 @@ public class UserService {
 
         return result.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
+
+    @Transactional
+    public void updateProfileImage(String username, UpdateProfileRequest request) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        user.updateProfileImageUrl(request.getProfileImageUrl());
+    }
 }
