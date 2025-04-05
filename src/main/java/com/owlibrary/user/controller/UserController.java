@@ -1,5 +1,7 @@
 package com.owlibrary.user.controller;
 
+import com.owlibrary.user.dto.FindUsernameRequest;
+import com.owlibrary.user.dto.FindUsernameResponse;
 import com.owlibrary.user.dto.SignupRequest;
 import com.owlibrary.user.dto.SignupResponse;
 import com.owlibrary.user.service.UserService;
@@ -22,5 +24,10 @@ public class UserController {
     public ResponseEntity<SignupResponse> signUp(@RequestBody @Valid SignupRequest request) {
         SignupResponse response = userService.signUp(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/find-username")
+    public ResponseEntity<FindUsernameResponse> findUsername(@RequestBody @Valid FindUsernameRequest request) {
+        return ResponseEntity.ok(userService.findUsername(request));
     }
 }
